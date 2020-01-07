@@ -1,0 +1,17 @@
+{
+  "name": "express-simple-api",
+  "version": "1.0.0",
+  "description": "Express wrapper to implement generic API",
+  "license": "MIT",
+  "repository": "raulcalvo/express-simple-api",
+  "main": "index.js",
+  "keywords": [
+    "express",
+    "API"
+  ],
+  "dependencies": {
+    "express": "^4.17.1",
+    "logger-to-memory": "^1.0.1",
+    "merge-json": "0.1.0-b.3"
+  }
+}
