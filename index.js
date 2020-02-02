@@ -21,15 +21,13 @@ module.exports = class expressimpleapi{
         var defaultConfig = {};
         defaultConfig[getModuleName()] = {
             "apiHeader": "raulcalvo/express-simple-api description:",
-            "lineSeparator": "<br>",
             "host": '0.0.0.0',
             "port": 80
         };
         this._config = configLoader.load(__dirname, config, defaultConfig);
 
         this._express = new express();
-        this._apiText = new Array();
-        this._apiText[0] = this.getConfig("apiHeader");
+        this._api = new Array();
         this.addDefaultPaths();
     }
 
@@ -42,38 +40,83 @@ module.exports = class expressimpleapi{
     }
     
     addDefaultPaths(){
-        this.addGetPath("/api", "Shows API", (req, res) => {
+        var jsonPath ={
+            "path" : "/api",
+            "description" : "Shows API",
+            "method" : "GET",
+            "params" : [],
+            "result" : {
+                "type" : "json"
+            }
+        };
+        this.addPath(jsonPath, (req, res) => {
             res.send(this.getApi());
         });        
-        this.addGetPath("/config", "Shows Config", (req, res) => {
+        jsonPath ={
+            "path" : "/config",
+            "description" : "Shows config",
+            "method" : "GET",
+            "params" : [],
+            "result" : {
+                "type" : "json"
+            }
+        };           
+        this.addPath(jsonPath, (req, res) => {
             res.send(JSON.stringify(this._config));
-        });
-        this.addGetPath("/logs", "Shows logs", (req, res) => {
+        });        
+        jsonPath ={
+            "path" : "/logs",
+            "description" : "Shows logs",
+            "method" : "GET",
+            "params" : [],
+            "result" : {
+                "type" : "text"
+            }
+        };           
+        this.addPath(jsonPath, (req, res) => {
             res.send(this._logger.get());
-        });
+        });        
 
-    }    
+    }  
+    
+    addPath(jsonPath, func){
+        this._api.push(jsonPath);
+        if (!jsonPath.hasOwnProperty("method"))
+            return;
+        if (jsonPath.method == "GET")
+            this._express.get(jsonPath.path, func);
+        if (jsonPath.method == "POST")
+            this._express.post(jsonPath.path, func);
+    }
     
     addGetPath(path, api, func) {
-        this.addAPILine("<hr>" + path + " -> " + api);
-        this._express.get(path, func);
+        var jsonPath ={
+            "path" : path,
+            "description" : api,
+            "method" : "GET",
+            "params" : [],
+            "result" : {
+                "type" : "text"
+            }
+        };
+        this.addPath(jsonPath, func);
     }
 
     addPostPath(path, api, func) {
-        this.addAPILine("<hr>" + path + " -> " + api);
-        this._express.post(path, func);
+        var jsonPath ={
+            "path" : path,
+            "description" : api,
+            "method" : "POST",
+            "params" : [],
+            "result" : {
+                "type" : "text"
+            }
+        };
+        this.addPath(jsonPath, func);
     }
 
-    addAPILine(description) {
-        this._apiText.push(description);
-    }    
-
     getApi() {
-        var out = "";
-        this._apiText.forEach(value => {
-            out += value + this.getConfig("lineSeparator");
-        });
-        return out;
+        return JSON.stringify(this._api);
     }
 
     startListening(){

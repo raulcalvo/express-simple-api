@@ -9,6 +9,9 @@
     "express",
     "API"
   ],
+  "test": {
+    "start": "node test.js"
+  },  
   "dependencies": {
     "express": "^4.17.1",
     "extended-requirer": "^1.0.1",
