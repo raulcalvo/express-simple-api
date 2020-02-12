@@ -1,8 +1,8 @@
 'use strict';
 global.__basedir = __dirname;
 
-const requirer = require("../extended-requirer/index.js");
-const r = new requirer(__dirname,{"currentConfig" : "DEV"});
+const requirer = require("extended-requirer");
+const r = new requirer(__dirname,{"currentConfig" : "PRO"});
 
 const logger = r.require("logger-to-memory");
 
@@ -28,4 +28,29 @@ var config = {
 
 var e = new api(config);
 e.setLogger(log);
+var jsonPath ={
+    "path" : "/suma",
+    "description" : "Suma de dos números",
+    "method" : "GET",
+    "params" : [
+        {
+            name : "n1",
+            type: "string",
+            maxLength: 10,
+            placeholder: "First number..."
+        },{
+            name : "n2",
+            type: "string",
+            maxLength: 10,
+            placeholder: "Second number..."
+        }
+    ],
+    "result" : {
+        "type" : "json"
+    }
+};
+e.addPath(jsonPath, (req, res) => {
+    var result = Number(req.query.n1) + Number(req.query.n2);
+    res.send("result: " + result);
+});
 e.startListening();

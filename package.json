@@ -9,12 +9,14 @@
     "express",
     "API"
   ],
-  "test": {
+  "scripts": {
     "start": "node test.js"
-  },  
+  },
   "dependencies": {
+    "config-loader-manager": "^1.0.2",
     "express": "^4.17.1",
-    "extended-requirer": "^1.0.1",
+    "extended-requirer": "^1.0.2",
+    "html-creator": "^0.4.3",
     "logger-to-memory": "^1.0.1",
     "merge-json": "0.1.0-b.3"
   }
