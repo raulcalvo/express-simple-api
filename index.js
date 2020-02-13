@@ -1,6 +1,6 @@
 'use strict';
 
-const requirer = require("../extended-requirer/index.js");
+const requirer = require("extended-requirer");
 const r = new requirer(__dirname);
 
 const logger = r.require('logger-to-memory');
